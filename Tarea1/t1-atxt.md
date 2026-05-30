@@ -52,4 +52,4 @@ Mediante la extracción de $n$-gramas ($n=2$) y el modelado de grafos dirigidos 
 El análisis estadístico de texto realizado en esta práctica comprueba que las variaciones en las métricas de PLN tradicionales (frecuencias, riqueza léxica y distribuciones de bigramas) no son aleatorias, sino que mapean con precisión la psicología de los personajes, el diseño socioeconómico del entorno y la estructura narrativa de una obra. 
 
 ---
-Jessica Lizeth Hernández Bracho - 1842553
+*Jessica Lizeth Hernández Bracho - 1842553*
