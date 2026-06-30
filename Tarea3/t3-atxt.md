@@ -52,7 +52,7 @@ Detalles acerca del comportamiento de las 12 configuraciones experimentales eval
 
 ### 4. Conclusión
 
-El diseño de experimentos demostró de forma estadística que el éxito en el procesamiento de lenguaje natural no depende únicamente de la complejidad del vectorizador, mientras que los n-gramas y los caracteres fallaron en capturar de forma eficiente la semántica de las discusiones de los foros, la vectorización clásica por **TF-IDF Palabras** demostró su superioridad académica al ponderar correctamente la relevancia de los tecnicismos de cada categoría. 
+El diseño de experimentos demuestra de forma estadística que el éxito en el procesamiento de lenguaje natural no depende únicamente de la complejidad del vectorizador, mientras que los n-gramas y los caracteres fallan en capturar de forma eficiente la semántica de las discusiones de los foros, la vectorización clásica por **TF-IDF Palabras** tuvo una superioridad al ponderar correctamente la relevancia de los tecnicismos de cada categoría. 
 
 ---
-[Código](Tarea3-PCD.ipynb)
+[Código](Tarea3_PCD.ipynb)
