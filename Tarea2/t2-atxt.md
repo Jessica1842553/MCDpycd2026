@@ -42,4 +42,4 @@ Los resultados contradicen la hipótesis intuitiva de que el guion de *Malcolm* 
 Se descubre que el piloto de *Modern Family* basa su comedia en la incomodidad, la frustración parental y el conflicto sutil (reflejado en el 40.16% de carga negativa). En contrapolo, el guion de *Malcolm* utiliza términos de alta energía, asombro y descripciones entusiastas para introducir su universo al espectador, lo que sesga positivamente la métrica del diccionario de sentimientos.
 
 ---
-Puntos 7, 8 y 9 del código: [Tarea2_PCD](Tarea2/Tarea2_PCD.ipynb)
+- [Código](Tarea2_PCD.ipynb) (puntos 7, 8 y 9)
