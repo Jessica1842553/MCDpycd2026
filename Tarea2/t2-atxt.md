@@ -40,3 +40,6 @@ Se implementó un análisis de sentimiento basado en el léxico lexicográfico A
 Los resultados contradicen la hipótesis intuitiva de que el guion de *Malcolm* reflejaría una mayor negatividad por el tono disfuncional de la serie. *Malcolm in the Middle* presenta un promedio de sentimiento significativamente más alto (0.605) y una mayor concentración de palabras positivas (67.57%). 
   
 Se descubre que el piloto de *Modern Family* basa su comedia en la incomodidad, la frustración parental y el conflicto sutil (reflejado en el 40.16% de carga negativa). En contrapolo, el guion de *Malcolm* utiliza términos de alta energía, asombro y descripciones entusiastas para introducir su universo al espectador, lo que sesga positivamente la métrica del diccionario de sentimientos.
+
+---
+Puntos 7, 8 y 9 del código: [Tarea2_PCD](Tarea2/Tarea2_PCD.ipynb)
