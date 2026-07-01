@@ -26,4 +26,4 @@ Como se constata en la representación gráfica final, el algoritmo logró discr
 ---
 
 - [Imagen](https://www.essentialcycles.com/cdn/shop/files/090705-01_1.jpg?v=1737387525)
-- [Código](Tarea4_PCD.ipynb)
+- [Código](T4_PCD.ipynb)
