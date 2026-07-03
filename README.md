@@ -8,4 +8,4 @@ Repositorio para la matería Procesamiento y Clasificación de datos.
 - [Tarea 2](Tarea2/t2-atxt.md)
 - [Tarea 3](Tarea3/t3-atxt.md)
 - [Tarea 4](Tarea4/t4-aimg.md)
-- [Tarea 5](Tarea5/t4-aimg.md)
+- [Tarea 5](Tarea5/t5-aimg.md)
