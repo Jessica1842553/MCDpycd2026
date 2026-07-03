@@ -24,7 +24,7 @@ El modelo secuencial implementado bajo la metodología de Transfer Learning util
 ### A. Eficiencia Paramétrica
 Al establecer conceptualmente la propiedad `base_model.trainable = False`, se congelaron 14,714,688 parámetros correspondientes a los extractores de características primitivas de VGG16. Esto permitió restringir el entrenamiento estocástico a únicamente 2,097,665 parámetros acoplados en el clasificador densamente conectado. 
 
-### B. Diagnóstico de la Convergencia y Curvas de Aprendizaje
+### B. Diagnóstico de la Convergencia
 Al analizar las representaciones gráficas resultantes, se identifican fenómenos analíticos de gran valor teórico:
 
 1. **Efecto del Conocimiento Transferido (Época 0 a 1):** Durante la primera transición de épocas, se aprecia la métrica `accuracy` en entrenamiento se eleva exponencialmente de 52.75% a 77.50%, mientras que la función de pérdida decrece de 1.08 a 0.47. Este comportamiento valida la efectividad de los pesos iniciales de *ImageNet*, los cuales proveen al sistema filtros pre-configurados que aceleran la identificación de estructuras celulares.
@@ -33,6 +33,6 @@ Al analizar las representaciones gráficas resultantes, se identifican fenómeno
 
 ### 4. Conclusión
 La estrategia de Transfer Learning con VGG16 representa una solución óptima y balanceada para diferentes tareas, como en este caso de clasificación biomédica donde los recursos computacionales y el volumen de muestras son limitados.
----
 
+---
 - [Código](Tarea5_PCD.ipynb)
