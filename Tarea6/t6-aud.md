@@ -33,3 +33,6 @@ Mediante el cálculo de la STFT y su posterior conversión a la escala logarítm
 
 ## 5. Conclusión
 A través de la combinación de descriptores en el dominio del tiempo, coeficientes y métricas de masa espectral como el Centroide, se logró establecer una frontera matemática clara de $\approx 1296.46\text{ Hz}$ de diferencia, demostrando que las herramientas usadas proporcionan un marco riguroso y reproducible para el análisis de fenómenos acústicos.
+
+---
+- [Código](Tarea6_PCD.ipynb)

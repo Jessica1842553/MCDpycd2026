@@ -28,3 +28,6 @@ $$\hat{x}[n] = \frac{x[n]}{\max(|x[n]|)}$$
 ## Conclusiones
 * La combinación de **Wavelet (Aproximación Level 4) + Normalización + DTW** permite construir un reconocedor de voz aislado eficiente sin necesidad de entrenar redes neuronales complejas.
 * Se demostró experimentalmente que el procesamiento previo de la señal (pre-procesamiento de amplitud) es igual o más crítico que la elección del algoritmo de distancia.
+
+---
+- [Código](Tarea7_PCD.ipynb)
