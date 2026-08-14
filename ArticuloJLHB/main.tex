@@ -1,0 +1,437 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{array}
+\usepackage{caption}
+\usepackage[square,numbers]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{subcaption}
+\usepackage[square,numbers]{natbib}
+\decimalpoint
+
+\usepackage[hyphens]{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage{breakurl}
+\urlstyle{same}   
+
+\usepackage{ebgaramond}   % Fuente del contenido
+\usepackage{helvet}       % Para títulos de secciones
+\renewcommand{\familydefault}{\rmdefault}
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\bfseries} 
+
+\newcommand{\TitleStyleOne}[1]{\bfseries\sffamily #1}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.96,0.96,0.96}
+
+\lstdefinestyle{pystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\scriptsize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=pystyle}
+
+\begin{document}
+
+\begin{textblock*}{9cm}(\dimexpr0.5\paperwidth-4.5cm\relax,2cm)
+\color{black}
+\centering
+\footnotesize\textbf{Universidad Autónoma de Nuevo León}\\
+\footnotesize Maestría en Ciencia de Datos\\
+\footnotesize Procesamiento y Clasificación de Datos
+\end{textblock*}
+
+\vspace*{0cm}
+
+\begin{center}
+    {\large \TitleStyleOne{Análisis Multimodal y Clasificación de Datos No Estructurados}}\\[0.5em]
+    
+    % Línea fina debajo del título
+    \rule{0.65\textwidth}{0.35pt}\\[0.7em]
+    
+    % Datos
+    {\large{Jessica Lizeth Hernández Bracho -- 1842553}}\\[0.3em]
+    {\today}
+\end{center}
+
+\vspace{0.8cm} 
+
+\section{Introducción}
+
+Aproximadamente el 80\% de los datos generados a nivel global corresponden a formatos no estructurados como texto libre, imágenes digitales y señales acústicas. A diferencia de las estructuras tabulares convencionales, la información no estructurada requiere técnicas avanzadas de normalización, extracción de características y modelado no lineal para su correcta interpretación computacional.
+
+El presente trabajo integra la metodología y los hallazgos analíticos desarrollados a lo largo del curso, abordando el procesamiento de datos no estructurados en tres dimensiones fundamentales: Análisis Léxico y Semántico de Texto, Visión por Computadora (segmentación industrial y \textit{Transfer Learning} biomédico) y Procesamiento de Señales de Audio y Voz (dominio frecuencial, descomposición Wavelet y alineación temporal DTW).
+
+\section{Descripción de los Datos}
+El análisis se sustentó en un conjunto de datos organizado en tres ejes temáticos:
+
+\begin{itemize}
+    \item \textbf{Textual de Series Televisivas:} Guiones en texto plano (\texttt{.txt}) de los episodios piloto ($1\times01$) de las comedias \textit{Malcolm in the Middle} (Linwood Boomer) y \textit{Modern Family} (Christopher Lloyd y Steven Levitan).
+    \item \textbf{Textual Académico:} Subconjunto balanceado del repositorio oficial \textit{20 Newsgroups} (\texttt{sklearn.datasets.fetch\_20newsgroups}), aislando las categorías competitivas, para un total de 1,892 observaciones.
+    \item \textbf{Visión Industrial y Biomédica:} Fotografía industrial de balines de acero y dataset biomédico \textit{Malaria} (500 micrografías de eritrocitos: 400 de entrenamiento y 100 de validación).
+    \item \textbf{Audio y Voz:} Intros musicales en formato MP3 (\textit{Game of Thrones} vs \textit{The Big Bang Theory}) y dataset \textit{Spoken MNIST} compuesto por señales de voz aisladas muestreadas a $8\text{ kHz}$ (dígitos $0$ y $1$).
+\end{itemize}
+
+\section{Antecedentes}
+El tratamiento de datos no estructurados ha evolucionado desde representaciones heurísticas hacia modelos vectoriales densos y redes profundas. En minería de texto, las métricas de riqueza léxica (TTR), modelos supervisados de polaridad (\textit{AFINN-165}) y la vectorización TF-IDF con lematización basada en \textit{WordNet} fundamentan la clasificación automática. En visión por computadora, las transformaciones geométricas y los detectores de bordes (Canny, Hough) permiten la metrología industrial automatizada, mientras que el aprendizaje por transferencia (\textit{Transfer Learning}) con arquitecturas como \textit{VGG16} reutiliza representaciones jerárquicas aprendidas en ImageNet. Finalmente, en señales acústicas, la caracterización espectral (STFT, MFCC, Centroides) y la descomposición multirresolución mediante transformada Wavelet acoplada a \textit{Dynamic Time Warping} (DTW) permiten clasificar secuencias de voz con variaciones temporales no lineales.
+
+\section{Metodología}
+
+\subsection{Módulo de Texto: Procesamiento, Estilo y Clasificación}
+
+El procesamiento y análisis del lenguaje natural se estructuró en dos vertientes principales: la caracterización estilístico-emocional de guiones de comedia (\textit{Malcolm in the Middle} y \textit{Modern Family}) y la clasificación temática supervisada sobre la identificación dentro de \textit{20 Newsgroups}.
+
+\subsubsection{Preprocesamiento y Limpieza Adaptativa de Guiones}
+Los guiones de los episodios piloto en texto plano (\texttt{.txt}) sufrieron una transformación en varias etapas para eliminar ruido textual sin perder la esencia sintáctica del diálogo:
+\begin{enumerate}
+    \item \textbf{Filtrado de Acotaciones Escénicas:} Mediante expresiones regulares (\texttt{re.sub}), se removieron las anotaciones entre paréntesis y corchetes que corresponden a instrucciones del director y no al diálogo hablado.
+    \item \textbf{Normalización Estándar:} Conversión total a minúsculas, eliminación de signos de puntuación y caracteres especiales no alfabéticos.
+    \item \textbf{Remoción Extendida de Stopwords:} Se utilizó la lista base en inglés del paquete \texttt{nltk.corpus} complementada con jerga conversacional propia de guiones de televisión (\texttt{gonna}, \texttt{wanna}, \texttt{gotta}, \texttt{yeah}, \texttt{oh}).
+    \item \textbf{Reducción Morfológica (Stemming):} Se aplicó el algoritmo \texttt{PorterStemmer} para reducir los tokens a su raíz morfológica común.
+\end{enumerate}
+
+\begin{lstlisting}[language=Python, caption={Preprocesamiento y limpieza adaptativa para guiones de series.}]
+import re
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+
+def pipeline_limpieza_guion(texto_raw):
+    # 1. Eliminar acotaciones escenicas [texto] o (texto)
+    texto_limpio = re.sub(r'\[.*?\]|\(.*?\)', '', texto_raw)
+    
+    # 2. Normalizacion a minusculas y caracteres alfabeticos
+    texto_limpio = re.sub(r'[^a-zA-Z\s]', '', texto_limpio).lower()
+    
+    # 3. Tokenizacion y filtrado de stopwords extendidas
+    tokens = texto_limpio.split()
+    stop_words_ext = set(stopwords.words('english')).union({'gonna', 'wanna', 'gotta', 'yeah', 'oh'})
+    tokens_filtrados = [w for w in tokens if w not in stop_words_ext]
+    
+    # 4. Stemming con Porter
+    stemmer = PorterStemmer()
+    tokens_stemmed = [stemmer.stem(w) for w in tokens_filtrados]
+    
+    return tokens_filtrados, tokens_stemmed
+\end{lstlisting}
+
+\subsubsection{Análisis Estilístico, Dinámica Narrativa y Sentimiento}
+Para capturar la evolución de la narrativa, cada guión se dividió cronológicamente en 4 bloques homogéneos (correspondientes a los actos dramáticos). Se evaluó la \textbf{Riqueza Léxica} mediante la métrica \textit{Type-Token Ratio} ($\text{TTR}$):
+
+$$\text{TTR} = \frac{|V|}{N}$$
+
+donde $|V|$ representa el número de palabras únicas (vocabulario) y $N$ el total de tokens en el bloque.
+
+La \textbf{similitud léxica} entre ambas producciones se cuantificó mediante la Similitud Coseno sobre la matriz cruzada de frecuencias de términos:
+
+$$\text{Similitud}(A, B) = \cos(\theta) = \frac{\mathbf{A} \cdot \mathbf{B}}{\|\mathbf{A}\| \|\mathbf{B}\|} = \frac{\sum_{i=1}^{n} A_i B_i}{\sqrt{\sum_{i=1}^{n} A_i^2} \sqrt{\sum_{i=1}^{n} B_i^2}}$$
+
+Para el \textbf{análisis de sentimiento} se mapearon los tokens filtrados contra el léxico supervisado \textit{AFINN-165}, el cual asigna una puntuación entera entre $-5$ (emoción extremadamente negativa) y $+5$ (extremadamente positiva). La puntuación de sentimiento promedio por acto se definió como:
+
+$$\bar{S} = \frac{1}{|T_{\text{AFINN}}|} \sum_{w \in T_{\text{AFINN}}} \text{Score}(w)$$
+
+\subsubsection{Lematización y Clasificación Temática en 20 Newsgroups}
+Para el análisis de \textit{20 Newsgroups} (\texttt{rec.autos} vs. \texttt{sci.space}), se reemplazó el \textit{stemming} por una \textbf{lematización morfológica} basada en la base de datos léxica \textit{WordNet} (\texttt{WordNetLemmatizer}), preservando la validez gramatical de los términos.
+
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccc}
+\hline
+\rowcolor[HTML]{CBCEFB} 
+\textbf{Categoría} & \textbf{Docs} & \textbf{Prom. Palabras (Std)} & \textbf{Prom. Caracteres (Std)} & \textbf{Densidad Léxica} \\ \hline
+rec.autos          & 937           & 119.53 (221.18)               & 692.21 (1342.46)                & 5.61                     \\
+sci.space          & 955           & 196.27 (502.94)               & 1253.26 (3367.81)               & 5.64                     \\ \hline
+\end{tabular}%
+}
+\caption{Distribución de Clases (Autos vs Espacio)}
+\end{table}
+
+Con el fin de determinar la mejor representación vectorial se diseñó un experimento comparativo evaluando 4 esquemas de extracción de características:
+\begin{itemize}
+    \item \textbf{Conteo Simple (Bag of Words):} Matriz de frecuencia absoluta de términos ($tf_{t,d}$).
+    \item \textbf{TF-IDF a Nivel Palabra:} Ponderación por Frecuencia de Término e Inversa de Frecuencia de Documento, como se muestra en la siguiente formula
+    $$\text{TF-IDF}(t, d, D) = tf_{t,d} \times \log \left( \frac{|D|}{|\{d \in D : t \in d\}|} \right)$$
+    \item \textbf{TF-IDF a Nivel N-Gramas:} Extracción de secuencias contiguas de palabras en un rango de $(2, 3)$-gramas para capturar contexto local.
+    \item \textbf{TF-IDF a Nivel Carácter:} Factorización en subpalabras y n-gramas de caracteres ($n \in [3, 5]$) para otorgar robustez ante errores ortográficos y variaciones morfológicas.
+\end{itemize}
+
+Cada representación vectorial se evaluó mediante un clasificador de \textbf{regresión logística}, optimizando la función de pérdida con regularización $L_2$ e iterando sobre tres valores del hiperparámetro de fuerza de regularización $C \in \{0.1, 1.0, 10.0\}$.
+
+\subsection{Módulo de Visión Industrial: Transformada de Hough}
+Para la inspección automatizada de balines de acero, la imagen de $900 \times 900$ píxeles se convirtió a escala de grises y se le aplicó un Suavizado Gaussiano con un kernel de $(13, 13)$ para atenuar los reflejos especulares. La extracción de fronteras y la localización de centros geométricos se realizó mediante el algoritmo \texttt{cv2.HoughCircles}:
+
+\begin{lstlisting}[language=Python, caption={Procesamiento para detección de balines.}]
+import cv2
+import numpy as np
+
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+blurred = cv2.GaussianBlur(gray, (13, 13), 0)
+edges = cv2.Canny(blurred, 30, 150)
+
+circles = cv2.HoughCircles(
+    blurred,
+    cv2.HOUGH_GRADIENT,
+    dp=1.2,
+    minDist=35,
+    param1=50,
+    param2=25,
+    minRadius=10,
+    maxRadius=25
+)
+\end{lstlisting}
+
+\subsection{Módulo de Visión Biomédica: Transfer Learning con VGG16}
+Para la detección de eritrocitos infectados con \textit{Malaria}, las micrografías se reescalaron a $(150, 150, 3)$ y se normalizaron en el rango $[0, 1]$. Se utilizó la arquitectura \textbf{VGG16} preentrenada en ImageNet congelando todos sus bloques convolucionales (\texttt{trainable=False}) y acoplando una cabeza de clasificación densa:
+
+\begin{lstlisting}[language=Python, caption={Construcción y compilación de la red VGG16.}]
+from tensorflow.keras.applications import VGG16
+from tensorflow.keras import layers, models
+
+base_model = VGG16(weights='imagenet', include_top=False, input_shape=(150, 150, 3))
+base_model.trainable = False
+
+model = models.Sequential([
+    base_model,
+    layers.Flatten(),
+    layers.Dense(256, activation='relu'),
+    layers.Dense(1, activation='sigmoid')
+])
+
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+\end{lstlisting}
+
+\subsection{Módulo de Audio y Voz: Análisis Frecuencial, Wavelet y DTW}
+Se extrajo los coeficientes MFCC (13 componentes) y la STFT para cuantificar el \textbf{Centroide Espectral Medio} ($\mu_{\text{cent}}$) de intros musicales. 
+
+Así como, para la clasificación de dígitos hablados (\textit{Spoken MNIST}), las señales se normalizaron primero en amplitud dividiendo entre la magnitud máxima para anular diferencias de volumen ($\|a\|_{\infty} = 1$). Posteriormente, se aplicó una descomposición Wavelet discreta Daubechies 1 (\texttt{db1}) a 4 niveles de resolución, extrayendo el vector de coeficientes de aproximación $cA_4$ como la firma acústica de baja frecuencia. La distancia entre la señal incógnita y las referencias conocidas ($0$ y $1$) se calculó mediante \textbf{Dynamic Time Warping (DTW)}:
+
+\begin{lstlisting}[language=Python, caption={Normalización, descomposición Wavelet y clasificación DTW.}]
+import pywt
+from dtw import dtw
+
+# Normalización de amplitud
+a_A_norm = audio_A / np.max(np.abs(audio_A))
+a_B_norm = audio_B / np.max(np.abs(audio_B))
+a_test_norm = audio_test / np.max(np.abs(audio_test))
+
+# Descomposición Wavelet (Nivel 4, db1)
+coeffs_A = pywt.wavedec(a_A_norm, 'db1', level=4)[0]
+coeffs_B = pywt.wavedec(a_B_norm, 'db1', level=4)[0]
+coeffs_test = pywt.wavedec(a_test_norm, 'db1', level=4)[0]
+
+# Clasificación por mínima distancia acumulada DTW
+res_A = dtw(coeffs_test, coeffs_A, keep_internals=True)
+res_B = dtw(coeffs_test, coeffs_B, keep_internals=True)
+\end{lstlisting}
+
+\section{Resultados y Discusión}
+
+\subsection{Análisis Léxico y Emocional de Guiones}
+Las palabras más frecuentes en \textit{Malcolm} correspondieron a \texttt{malcolm} (33), \texttt{okay} (25), \texttt{know} (24) y \texttt{go} (23); mientras que en \textit{Modern Family} destacaron \texttt{know} (33), \texttt{okay} (30), \texttt{that} (24) y \texttt{dad} (21).
+
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcc}
+\hline
+\rowcolor[HTML]{CBCEFB} 
+\textbf{Métrica}                & \textbf{Malcolm in the Middle} & \textbf{Modern Family}  \\ \hline
+Signos de Exclamación (!)       & 55                             & 62                      \\
+Signos de Interrogación (?)     & 89                             & 104                     \\
+Riqueza Léxica                  & \textbf{0.423 (42.3\%)}        & \textbf{0.400 (40.0\%)} \\
+Carga Positiva                  & \textbf{67.57\%}               & 59.84\%                 \\
+Carga Negativa                  & 32.43\%                        & 40.16\%                 \\
+Puntuación Promedio Sentimiento & \textbf{0.605}                 & 0.389                   \\
+Top 1 Bigrama                   & (wait, wait) {[}5{]}           & (hi, hi) {[}4{]}        \\
+Top 2 Bigrama                   & (hold, hand) {[}4{]}           & (thank, thank) {[}4{]}  \\
+Top 3 Bigrama                   & (special, class) {[}3{]}       & (let, see) {[}4{]}      \\ \hline
+\end{tabular}%
+}
+\caption{Métricas estilísticas, léxicas y emocionales}
+\end{table}
+
+El análisis por bloques temporales mostró que \textit{Malcolm} se mantiene estable entre 210 y 230 palabras únicas por acto como se puede ver en la Figura \ref{fig:series}, mientras que \textit{Modern Family} alcanza picos superiores a 260 palabras únicas en los actos intermedios. La distancia de Coseno fue de \textbf{0.3586}, registrando una similitud léxica del \textbf{64.14\%}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth]{Imagenes/graf1(serie).png}
+    \caption{Diversidad léxica por bloques.}
+    \label{fig:series}
+\end{figure}
+
+\subsection{Clasificación de Texto en 20 Newsgroups}
+El modelo \textbf{TF-IDF a Nivel Palabra} con $C=1.0$ alcanzó el desempeño superior con una exactitud global de \textbf{94.72\%}.
+
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccl}
+\hline
+\rowcolor[HTML]{CBCEFB} 
+\textbf{Estrategia Vectorial} & \textbf{C=0.1} & \textbf{C=1.0}   & \textbf{C=10.0} & \textbf{Diagnóstico Técnico}         \\ \hline
+Conteo Simple         & 94.20\% & 94.20\% & 91.03\% & Sobreajuste a alta C por palabras ruidosas.   \\
+\textbf{TF-IDF Palabras}      & 91.20\%        & \textbf{94.72\%} & 94.46\%         & \textbf{Punto de equilibrio óptimo.} \\
+TF-IDF N-Gramas (2,3) & 53.30\% & 87.34\% & 88.39\% & Subajuste severo en C=0.1 por dispersión.     \\
+TF-IDF Caracteres     & 67.28\% & 69.80\% & 70.71\% & Baja capacidad discriminativa en texto largo. \\ \hline
+\end{tabular}%
+}
+\caption{Matriz de exactitud del diseño de experimentos en 20 Newsgroups.}
+\end{table}
+
+\subsection{Metrología Industrial con OpenCV}
+El algoritmo Hough detectó de forma automatizada un total de \textbf{134 balines} en la muestra industrial. El rango de radios estimados osciló entre $12\text{ px}$ y $24\text{ px}$, logrando aislar correctamente los centroides geométricos $(\bar{X}, \bar{Y})$ incluso en presencia de variaciones por iluminación reflexiva.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Imagenes/ball1.png}
+    \caption{Detección de Bordes (Canny) y Detección de Círculos (Hough).}
+    \label{fig:opencv1}
+\end{figure}
+
+\subsection{Clasificación Biomédica con VGG16}
+El conjunto de datos seleccionado para este experimento es el dataset oficial Malaria, disponible de manera nativa a través del repositorio de la API de \textit{tensorflow datasets (TFDS)}.
+
+El conjunto de datos global está compuesto por $27{,}558$ imágenes individuales de células sanguíneas, distribuidas equitativamente en dos categorías biológicas:
+
+\begin{itemize}
+    \item \textbf{Clase 0 --- \textit{Infectada}:} Células que albergan al parásito \textit{Plasmodium falciparum} en alguna de sus fases evolutivas. Morfológicamente se caracterizan por la presencia de pequeños anillos densos o inclusiones punctiformes de tonalidad morada/azul brillante dentro del citoplasma, derivadas de la tinción de Giemsa.
+    \item \textbf{Clase 1 --- \textit{Sana / Normal}}: Eritrocitos limpios que exhiben una textura y coloración rosada/rojiza homogénea, carentes de estructuras o cuerpos extraños intracelulares.
+\end{itemize}
+
+A partir del universo total, se extrajo un subconjunto estricto y equilibrado para garantizar la evaluación computacional del modelo:
+
+\begin{itemize}
+    \item \textbf{Subconjunto de Entrenamiento:} 400 micrografías digitales.
+    \item \textbf{Subconjunto de Validación:} 100 micrografías digitales.
+\end{itemize}
+
+La arquitectura convolucional acumuló $14,714,688$ parámetros no entrenables (base VGG16) y $2,097,665$ parámetros entrenables en el clasificador denso. Tras 10 épocas, la red logró una exactitud en entrenamiento de \textbf{94.25\%} con una pérdida de $0.1633$. En el conjunto de prueba independiente (100 imágenes), la exactitud de validación se estabilizó en \textbf{77.00\%} con un \textit{val\_loss} de $0.4343$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Imagenes/results(t5).png}
+    \caption{Gráficas de Resultados.}
+    \label{fig:biomed}
+\end{figure}
+
+\subsection{Análisis Acústico de Intros Musicales}
+Se seleccionaron como casos de estudio dos series con estructuras de producción opuestas: el tema principal de Game of Thrones (representativo del género dramático/orquestal) y un intro típico de The Big Bang Theory (representativo del género de comedia/pop).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Imagenes/onda1(series).png}
+    \caption{Comparativo de formas de onda.}
+    \label{fig:Adseries}
+\end{figure}
+
+El análisis frecuencial mediante STFT reveló diferencias estructurales significativas entre géneros de apertura:
+\begin{itemize}
+    \item \textbf{Game of Thrones:} Centroide Espectral Medio de \textbf{$1,325.89$} Hz (timbre grave/oscuro).
+    \item \textbf{The Big Bang Theory:} Centroide Espectral Medio de \textbf{$2,622.35$} Hz (timbre brillante/agudo).
+    \item \textbf{Brecha Espectral Absoluta:} \textbf{$1,296.46$} Hz.
+\end{itemize}
+
+\begin{figure}[H]
+    \caption{Frecuencias Representativas - Intro de Series.}
+    \centering
+    \begin{subfigure}[b]{0.7\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Imagenes/frGOT(series).png}
+        \caption{Game of Thrones}
+        \label{subfig:got}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.7\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Imagenes/frTBBT(series).png}
+        \caption{The Big Bang Theory}
+        \label{subfig:tbbt}
+    \end{subfigure}
+    
+    \label{fig:frec.rep}
+\end{figure}
+
+\subsection{Reconocimiento de Voz y Alineación DTW}
+A diferencia de la Transformada de Fourier, la Transformada Wavelet Discreta empleando la familia Daubechies (\texttt{db1} / Haar) permite descomponer la señal de audio en múltiples niveles de resolución temporal y frecuencial:
+
+\begin{itemize}
+    \item \textbf{Coeficientes de Aproximación ($cA$):} Capturan las frecuencias bajas y la envolvente fonética principal de la voz (es decir, el contorno espectral al articular palabras como \textit{zero} / \textit{one}).
+    \item \textbf{Coeficientes de Detalle ($cD$):} Capturan las frecuencias altas y variaciones de rápida transición (asociadas a ruido de fondo o consonantes sibilantes).
+\end{itemize}
+
+Para esta prueba, se seleccionaron los coeficientes de aproximación del cuarto nivel ($cA_4$), logrando una reducción significativa en la dimensión temporal del audio sin comprometer la estructura morfofonética subyacente.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Imagenes/onda2(dig).png}
+    \caption{Visualización de las Formas de Onda.}
+    \label{fig:AdVoz}
+\end{figure}
+
+Para la muestra de prueba correspondiente al dígito real "$0$", arrojó los siguientes resultados:
+
+\begin{itemize}
+    \item \textbf{Distancia acumulada hacia Muestra A (Dígito '$0$'):} $70.7006$
+    \item \textbf{Distancia acumulada hacia Muestra B (Dígito '$1$'):} $75.4533$
+\end{itemize}
+
+El criterio del vecino más cercano ($k\text{-NN}, k=1$) seleccionó correctamente la \textbf{Muestra A}, logrando una predicción certera de la clase '$0$'. El mapeo \textit{Twoway} y la matriz de costo acumulado (\textit{Threeway}) confirmaron la capacidad de DTW para compensar las diferencias no lineales en la velocidad de pronunciación del hablante.
+
+\begin{figure}[H]
+    \centering
+    \caption{Alineación Temporal Cruzada (Twoway Mapping).}
+    \includegraphics[width=0.7\textwidth]{Imagenes/results(t7).png}
+    \label{fig:AdVoz3}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \caption{Ruta Óptima en Matriz de Costo Acumulado (Threeway).}
+    \includegraphics[width=0.7\textwidth]{Imagenes/results(t7.1).png}
+    \label{fig:AdVoz3}
+\end{figure}
+
+\section{Conclusiones}
+\begin{enumerate}
+    \item La limpieza adaptativa de guiones y el análisis de N-gramas permiten extraer componentes narrativos clave como la trama de la clase especial en \textit{Malcolm}.
+    \item La lematización con \textit{WordNet} combinada con TF-IDF a nivel palabra ofreció el mejor rendimiento en clasificación temática de texto ($94.72\%$).
+    \item La calibración del suavizado gaussiano previo a la Transformada de Hough permitió cuantificar con precisión 134 componentes industriales eliminando falsos positivos por brillo.
+    \item El aprendizaje por transferencia mediante redes VGG16 congeladas demostró ser una alternativa eficiente para diagnóstico biomédico en regímenes de datos escasos.
+    \item El Centroide Espectral cuantificó la distancia acústica ($1,296.46\text{ Hz}$) entre arreglos musicales dramáticos y festivos.
+    \item La combinación de normalización de amplitud, filtrado Wavelet $cA_4$ y alineación temporal mediante DTW proporcionó un esquema altamente discriminativo para el reconocimiento de voz dependiente de la forma espectral ($d_{\text{$0$}} = 70.7006 < d_{\text{$1$}} = 75.4533$).
+\end{enumerate}
+
+En conjunto, la integración de estas metodologías confirma que la combinación estratégica de técnicas de procesamiento constituye una herramienta sumamente sólida y versátil. Este enfoque no solo optimiza la extracción de características altamente discriminativas a partir de fuentes de datos complejas e inestructuradas (texto, imágenes y audio), sino que también garantiza la interpretabilidad, precisión y eficiencia computacional requeridas en aplicaciones del mundo real.
+
+\clearpage
+% 7. REFERENCIAS
+\nocite{*}
+\bibliographystyle{unsrtnat} 
+\bibliography{referencias}
+
+\end{document}
